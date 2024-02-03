@@ -39,4 +39,16 @@ class SpotifyService
 
         return $response->json();
     }
+
+    public function searchArtistByName($artistName)
+    {
+        // Implementa la lógica para buscar artistas por nombre
+        $response = Http::withToken($this->accessToken)
+            ->get('https://api.spotify.com/v1/search', [
+                'q' => $artistName,
+                'type' => 'artist',
+            ]);
+
+        return $response->json();
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artist;
+use App\Services\SpotifyService;
 use App\Http\Requests\StoreArtistRequest;
 use App\Http\Requests\UpdateArtistRequest;
 use Exception;
@@ -14,6 +15,27 @@ class ArtistController extends Controller
     /**
      * Display a listing of the resource.
      */
+    protected $spotifyService;
+
+    public function __construct(SpotifyService $spotifyService)
+    {
+        $this->spotifyService = $spotifyService;
+    }
+
+    public function searchArtistByName(Request $request)
+    {
+        // Obtener el nombre del artista desde la solicitud
+        $artistName = $request->input('name');
+
+        // Autenticar con Spotify
+        $this->spotifyService->authenticate();
+
+        // Realizar la búsqueda del artista por nombre
+        $artistInfo = $this->spotifyService->searchArtistByName($artistName);
+
+        // Retornar los resultados de la búsqueda
+        return response()->json($artistInfo);
+    }
     public function index(Request $request)
     {
         try {
@@ -163,4 +185,5 @@ class ArtistController extends Controller
             'message'    => 'Restaurado exitosamente',
         ]);
     }
+
 }

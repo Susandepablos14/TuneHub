@@ -22,4 +22,7 @@ class SpotifyController extends Controller
         // Procesar la respuesta y devolverla al cliente
         return response()->json($artistInfo);
     }
+
 }
+
+
