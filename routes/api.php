@@ -8,6 +8,7 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\SongController;
 use App\Http\Controllers\SongGenreController;
+use App\Http\Controllers\SpotifyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -82,3 +83,4 @@ Route::put('/song_genre/{id}', [SongGenreController::class, 'update']);
 Route::delete('/song_genre/{id}', [SongGenreController::class, 'destroy']);
 Route::get('/song_genre/restore/{id}', [SongGenreController::class, 'restore']);
 
+Route::get('/artists/{artistId}', [SpotifyController::class, 'getArtistInfo']);
