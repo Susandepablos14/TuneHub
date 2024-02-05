@@ -15,6 +15,7 @@ class ArtistController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     protected $spotifyService;
 
     public function __construct(SpotifyService $spotifyService)
@@ -22,20 +23,7 @@ class ArtistController extends Controller
         $this->spotifyService = $spotifyService;
     }
 
-    public function searchArtistByName(Request $request)
-    {
-        // Obtener el nombre del artista desde la solicitud
-        $artistName = $request->input('name');
 
-        // Autenticar con Spotify
-        $this->spotifyService->authenticate();
-
-        // Realizar la búsqueda del artista por nombre
-        $artistInfo = $this->spotifyService->searchArtistByName($artistName);
-
-        // Retornar los resultados de la búsqueda
-        return response()->json($artistInfo);
-    }
     public function index(Request $request)
     {
         try {
@@ -62,6 +50,7 @@ class ArtistController extends Controller
             $artist->name = $request->name;
 
             $artist->save();
+
         }  catch (Exception $e) {
                 return response()->json([
                     'data' => [
@@ -82,7 +71,15 @@ class ArtistController extends Controller
     public function show($id)
     {
         try {
+            // Obtener el artista de la base de datos por su ID
             $artist = Artist::findOrFail($id);
+
+            // Autenticación con Spotify
+            $this->spotifyService->authenticate();
+
+            // Buscar al artista en la API de Spotify por su nombre
+            $artistInfo = $this->spotifyService->searchArtists($artist->name);
+
         } catch (Exception $e) {
             return response()->json([
                 'data' => [
@@ -91,11 +88,8 @@ class ArtistController extends Controller
                     'errors' => $e->getMessage(),
             ]
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        };
-        return response()->json([
-            'message'    => 'Hola',
-            'response'   => $artist,
-        ]); ;
+        }
+        return response()->json($artistInfo);
     }
 
     /**

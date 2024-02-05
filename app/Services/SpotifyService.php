@@ -31,23 +31,11 @@ class SpotifyService
         $this->accessToken = $responseData['access_token'];
     }
 
-    public function getArtistInfo($artistId)
+    public function searchArtists($query)
     {
-        // Implementa la lógica para obtener información sobre un artista específico
+        // Implementa la lógica para buscar artistas en Spotify
         $response = Http::withToken($this->accessToken)
-            ->get("https://api.spotify.com/v1/artists/{$artistId}");
-
-        return $response->json();
-    }
-
-    public function searchArtistByName($artistName)
-    {
-        // Implementa la lógica para buscar artistas por nombre
-        $response = Http::withToken($this->accessToken)
-            ->get('https://api.spotify.com/v1/search', [
-                'q' => $artistName,
-                'type' => 'artist',
-            ]);
+            ->get("https://api.spotify.com/v1/search?q={$query}&type=artist&limit=1");
 
         return $response->json();
     }

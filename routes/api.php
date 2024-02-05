@@ -83,5 +83,3 @@ Route::put('/song_genre/{id}', [SongGenreController::class, 'update']);
 Route::delete('/song_genre/{id}', [SongGenreController::class, 'destroy']);
 Route::get('/song_genre/restore/{id}', [SongGenreController::class, 'restore']);
 
-Route::get('/artists/{artistId}', [SpotifyController::class, 'getArtistInfo']);
-Route::get('/artists/search', [ArtistController::class, 'searchArtistByName']);
